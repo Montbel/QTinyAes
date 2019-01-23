@@ -1,4 +1,14 @@
-include($$PWD/de_skycoder42_qtinyaes.pri)
+HEADERS += \
+	$$PWD/qtinyaes.h
 
-HEADERS += $$PWD/tiny-AES128-C/aes.h
-SOURCES += $$PWD/tiny-AES128-C/aes.c
+SOURCES += \
+	$$PWD/qtinyaes.cpp
+
+INCLUDEPATH += $$PWD
+
+QDEP_DEPENDS += Skycoder42/tiny-AES-C
+
+!qdep_build {
+	isEmpty(TINYAES_KEYSIZE): TINYAES_KEYSIZE = 256
+	DEFINES += AES$${TINYAES_KEYSIZE}=1
+}

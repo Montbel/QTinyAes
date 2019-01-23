@@ -7,9 +7,7 @@
 #include <QRandomGenerator>
 #endif
 
-extern "C" {
-#include <aes.h>
-}
+#include <aes.hpp>
 #undef CBC
 #undef ECB
 #undef CTR
