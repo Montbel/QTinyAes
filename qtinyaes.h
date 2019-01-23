@@ -40,6 +40,9 @@ public:
 	Q_INVOKABLE QByteArray encrypt(const QByteArray &plain) const;
 	Q_INVOKABLE QByteArray decrypt(const QByteArray &cipher) const;
 
+	Q_INVOKABLE QByteArray encryptRaw(const QByteArray &plain) const;
+	Q_INVOKABLE QByteArray decryptRaw(const QByteArray &cipher) const;
+
 	static QByteArray ctrEncrypt(const QByteArray &key, const QByteArray &iv, const QByteArray &plain);
 	static QByteArray ctrDecrypt(const QByteArray &key, const QByteArray &iv, const QByteArray &cipher);
 	static QByteArray cbcEncrypt(const QByteArray &key, const QByteArray &iv, const QByteArray &plain);

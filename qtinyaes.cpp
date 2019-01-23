@@ -107,9 +107,23 @@ void QTinyAes::resetIv()
 
 QByteArray QTinyAes::encrypt(const QByteArray &plain) const
 {
-	Q_ASSERT_X(!d->key.isEmpty(), Q_FUNC_INFO, "The key must not be empty to encrypt data");
 	auto buffer = plain;
 	preparePlainText(buffer);
+	return encryptRaw(buffer);
+}
+
+QByteArray QTinyAes::decrypt(const QByteArray &cipher) const
+{
+	auto buffer = decryptRaw(cipher);
+	restorePlainText(buffer);
+	return buffer;
+}
+
+QByteArray QTinyAes::encryptRaw(const QByteArray &plain) const
+{
+	Q_ASSERT_X(!d->key.isEmpty(), Q_FUNC_INFO, "The key must not be empty to encrypt data");
+	Q_ASSERT_X(plain.size() % BlockSize == 0, Q_FUNC_INFO, "plain must be a multiple of QTinyAes::BlockSize");
+	auto buffer = plain;
 
 	AES_ctx ctx;
 	if(d->iv.isNull())
@@ -141,9 +155,10 @@ QByteArray QTinyAes::encrypt(const QByteArray &plain) const
 
 }
 
-QByteArray QTinyAes::decrypt(const QByteArray &cipher) const
+QByteArray QTinyAes::decryptRaw(const QByteArray &cipher) const
 {
 	Q_ASSERT_X(!d->key.isEmpty(), Q_FUNC_INFO, "The key must not be empty to decrypt data");
+	Q_ASSERT_X(cipher.size() % BlockSize == 0, Q_FUNC_INFO, "cipher must be a multiple of QTinyAes::BlockSize");
 	auto buffer = cipher;
 
 	AES_ctx ctx;
@@ -174,7 +189,6 @@ QByteArray QTinyAes::decrypt(const QByteArray &cipher) const
 		break;
 	}
 
-	restorePlainText(buffer);
 	return buffer;
 }
 
